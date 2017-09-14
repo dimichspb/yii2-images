@@ -60,7 +60,7 @@ class Image extends \yii\db\ActiveRecord
         return $url;
     }
 
-    public function getPath($size = false){
+    public function getPath($size = false, $position = 'center'){
         $urlSize = ($size) ? '_'.$size : '';
         $base = $this->getModule()->getCachePath();
         $sub = $this->getSubDur();
@@ -70,7 +70,7 @@ class Image extends \yii\db\ActiveRecord
         $filePath = $base.DIRECTORY_SEPARATOR.
             $sub.DIRECTORY_SEPARATOR.$this->urlAlias.$urlSize.'.'.pathinfo($origin, PATHINFO_EXTENSION);;
         if(!file_exists($filePath)){
-            $this->createVersion($origin, $size);
+            $this->createVersion($origin, $size, $position);
 
             if(!file_exists($filePath)){
                 throw new \Exception('Problem with image creating.');
@@ -136,7 +136,7 @@ class Image extends \yii\db\ActiveRecord
         return $newSizes;
     }
 
-    public function createVersion($imagePath, $sizeString = false)
+    public function createVersion($imagePath, $sizeString = false, $position = 'center')
     {
         if(strlen($this->urlAlias)<1){
             throw new \Exception('Image without urlAlias!');
@@ -188,7 +188,7 @@ class Image extends \yii\db\ActiveRecord
                 if($size){
                     if($size['height'] && $size['width']){
 
-                        $image->thumbnail($size['width'], $size['height']);
+                        $image->thumbnail($size['width'], $size['height'], $position);
                     }elseif($size['height']){
                         $image->fit_to_height($size['height']);
                     }elseif($size['width']){
