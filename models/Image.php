@@ -60,7 +60,7 @@ class Image extends \yii\db\ActiveRecord
         return $url;
     }
 
-    public function getPath($size = false, $position = 'center'){
+    public function getPath($size = false, $position = 'top'){
         $urlSize = ($size) ? '_'.$size : '';
         $base = $this->getModule()->getCachePath();
         $sub = $this->getSubDur();
@@ -136,7 +136,7 @@ class Image extends \yii\db\ActiveRecord
         return $newSizes;
     }
 
-    public function createVersion($imagePath, $sizeString = false, $position = 'center')
+    public function createVersion($imagePath, $sizeString = false, $position = 'top')
     {
         if(strlen($this->urlAlias)<1){
             throw new \Exception('Image without urlAlias!');
